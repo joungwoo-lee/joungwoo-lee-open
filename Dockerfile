@@ -19,12 +19,8 @@ RUN apt-get update && apt-get upgrade -y && \
     ln -s /usr/bin/pip3 /usr/local/bin/pip && \
     rm -rf /var/lib/apt/lists/*
 
-# 2) 파이썬 업그레이드 및 충돌 방지
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip uninstall -y google || true \
-    python -m pip show google && python -m pip uninstall -y google || true \
-    python -m pip install -U pip setuptools wheel \
-    python -m pip install -U google-adk mcp 
+# 2) 파이썬 업그레이드 
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel  
     
 # 3) 파이썬 패키지 설치
 RUN pip install --no-cache-dir \
@@ -126,6 +122,11 @@ RUN pip install --no-cache-dir \
     google-adk \
     mcp \
     google-genai
+
+# 충돌방지
+RUN python -m pip show google && python -m pip uninstall -y google || true \
+    python -m pip install -U pip setuptools wheel \
+    python -m pip install -U google-adk mcp    
 
 # 4) bash-completion / fzf 설정
 RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc && \
