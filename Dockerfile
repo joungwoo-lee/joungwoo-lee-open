@@ -19,9 +19,19 @@ RUN apt-get update && apt-get upgrade -y && \
     ln -s /usr/bin/pip3 /usr/local/bin/pip && \
     rm -rf /var/lib/apt/lists/*
 
-# 2) 파이썬 업그레이드 및 충돌 방지
+# 2) 파이썬 업그레이드 및 충돌 방지, 임포트 스모크 테스트
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip uninstall -y google || true
+    python -m pip show google && python -m pip uninstall -y google || true
+    python -m pip install -U pip setuptools wheel
+    python -m pip install -U google-adk mcp
+
+    python - <<'PY'
+    from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
+    from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams, SseConnectionParams
+    from mcp import StdioServerParameters
+    print("ADK+MCP imports OK")
+    PY
     
 # 3) 파이썬 패키지 설치
 RUN pip install --no-cache-dir \
