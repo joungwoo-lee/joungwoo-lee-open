@@ -142,6 +142,16 @@ ENV INTERNAL_LLM_API_BASE=http://host.docker.internal:11434/v1 \
 # 7) 포트 노출
 EXPOSE 37910 37911 37912 37913 37914 37915 38010 38011
 
+# *) [충돌 방지] 빌드 마지막 정리: google 네임스페이스 제거 후 최신 설치
+#     - google 패키지가 존재하면 제거
+#     - pip/setuptools/wheel 업그레이드
+#     - google-adk, mcp 재설치(최신화)
+RUN if python -m pip show google >/dev/null 2>&1; then \
+      python -m pip uninstall -y google; \
+    fi && \
+    python -m pip install -U pip setuptools wheel && \
+    python -m pip install -U google-adk mcp
+
 # 8) 레포 루트의 autorun.sh를 /root로 복사 (레포에 있어야 빌드 성공)
 COPY autorun.sh /root/autorun.sh
 
