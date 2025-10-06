@@ -123,11 +123,6 @@ RUN pip install --no-cache-dir \
     mcp \
     google-genai
 
-# 충돌방지
-RUN python -m pip show google && python -m pip uninstall -y google || true \
-    python -m pip install -U pip setuptools wheel \
-    python -m pip install -U google-adk mcp    
-
 # 4) bash-completion / fzf 설정
 RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc && \
     if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then \
