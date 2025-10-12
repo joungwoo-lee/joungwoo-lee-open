@@ -121,7 +121,15 @@ RUN pip install --no-cache-dir \
     zstandard==0.25.0 \
     google-adk \
     mcp \
-    google-genai
+    google-genai \
+    python-dotenv \
+    langchain \
+    langchain-community \
+    litellm \
+    arxiv \
+    duckduckgo-search \
+    tavily-python
+
 
 # 4) bash-completion / fzf 설정
 RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc && \
