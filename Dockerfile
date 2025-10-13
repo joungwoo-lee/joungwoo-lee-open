@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 # 3) 파이썬 패키지 설치
 RUN pip install --no-cache-dir \
     langchain langchain-community langchain-openai langgraph \
-    pydantic[dotenv] python-dotenv requests tqdm rich ipython ipykernel \
+    python-dotenv requests tqdm rich ipython ipykernel \
     fastapi fastmcp pymysql langchain_tavily \
     annotated-types \
     anyio==4.10.0 \
