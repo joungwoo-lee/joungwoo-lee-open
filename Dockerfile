@@ -128,6 +128,7 @@ RUN pip install --no-cache-dir \
     litellm \
     arxiv \
     duckduckgo-search \
+    ddgs \
     tavily-python
 
 
