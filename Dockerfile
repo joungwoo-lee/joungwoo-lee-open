@@ -21,13 +21,14 @@ RUN apt-get update && apt-get upgrade -y && \
 
 # 2) 파이썬 업그레이드 
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel  
-    
+
 # 3) 파이썬 패키지 설치
+#    (기존 목록 유지 + fastmcp 포함. pydantic-settings는 아래에서 별도 정렬)
 RUN pip install --no-cache-dir \
     langchain langchain-community langchain-openai langgraph \
-    python-dotenv requests tqdm rich ipython ipykernel \
+    pydantic[dotenv] python-dotenv requests tqdm rich ipython ipykernel \
     fastapi fastmcp pymysql langchain_tavily \
-    annotated-types \
+    annotated-types==0.7.0 \
     anyio==4.10.0 \
     asgiref==3.9.1 \
     backoff==2.2.1 \
@@ -88,8 +89,8 @@ RUN pip install --no-cache-dir \
     protobuf==6.32.1 \
     pyasn1==0.6.1 \
     pyasn1_modules==0.4.2 \
-    pydantic>=2.7,<3 \
-    pydantic-settings>=2.4,<3 \
+    pydantic==2.9.2 \
+    pydantic_core==2.23.4 \
     Pygments==2.19.2 \
     PyPika==0.48.9 \
     pyproject_hooks==1.2.0 \
@@ -131,6 +132,14 @@ RUN pip install --no-cache-dir \
     ddgs \
     tavily-python
 
+# 3-1) fastmcp 구동 안정화를 위한 버전 정렬
+#      - pydantic v2 계열 고정
+#      - pydantic-settings v2.4+ 추가
+#      - fastmcp 재정렬(업/다운 무관)
+RUN pip install --no-cache-dir -U \
+    "pydantic>=2.7,<3" \
+    "pydantic-settings>=2.4,<3" \
+    fastmcp
 
 # 4) bash-completion / fzf 설정
 RUN echo "source /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc && \
@@ -152,9 +161,6 @@ ENV INTERNAL_LLM_API_BASE=http://host.docker.internal:11434/v1 \
 EXPOSE 37910 37911 37912 37913 37914 37915 38010 38011
 
 # *) [충돌 방지] 빌드 마지막 정리: google 네임스페이스 제거 후 최신 설치
-#     - google 패키지가 존재하면 제거
-#     - pip/setuptools/wheel 업그레이드
-#     - google-adk, mcp 재설치(최신화)
 RUN if python -m pip show google >/dev/null 2>&1; then \
       python -m pip uninstall -y google; \
     fi && \
