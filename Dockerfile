@@ -27,7 +27,7 @@ RUN pip install --no-cache-dir \
     langchain langchain-community langchain-openai langgraph \
     pydantic[dotenv] python-dotenv requests tqdm rich ipython ipykernel \
     fastapi fastmcp pymysql langchain_tavily \
-    annotated-types==0.7.0 \
+    annotated-types \
     anyio==4.10.0 \
     asgiref==3.9.1 \
     backoff==2.2.1 \
@@ -88,8 +88,8 @@ RUN pip install --no-cache-dir \
     protobuf==6.32.1 \
     pyasn1==0.6.1 \
     pyasn1_modules==0.4.2 \
-    pydantic==2.9.2 \
-    pydantic_core==2.23.4 \
+    pydantic>=2.7,<3 \
+    pydantic-settings>=2.4,<3 \
     Pygments==2.19.2 \
     PyPika==0.48.9 \
     pyproject_hooks==1.2.0 \
