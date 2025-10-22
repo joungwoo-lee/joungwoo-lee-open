@@ -19,11 +19,24 @@ RUN apt-get update && apt-get upgrade -y && \
     ln -s /usr/bin/pip3 /usr/local/bin/pip && \
     rm -rf /var/lib/apt/lists/*
 
+# 1-1) ★ Docker CLI 설치 (데몬 아님)
+#      - 도커 공식 리포지토리 추가 후 docker-ce-cli만 설치
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl gnupg; \
+    install -m 0755 -d /etc/apt/keyrings; \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg; \
+    chmod a+r /etc/apt/keyrings/docker.gpg; \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable" \
+      > /etc/apt/sources.list.d/docker.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends docker-ce-cli; \
+    rm -rf /var/lib/apt/lists/*
+
 # 2) 파이썬 업그레이드 
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel  
 
 # 3) 파이썬 패키지 설치
-#    (기존 목록 유지 + fastmcp 포함. pydantic-settings는 아래에서 별도 정렬)
 RUN pip install --no-cache-dir \
     langchain langchain-community langchain-openai langgraph \
     pydantic[dotenv] python-dotenv requests tqdm rich ipython ipykernel \
@@ -133,9 +146,6 @@ RUN pip install --no-cache-dir \
     tavily-python
 
 # 3-1) fastmcp 구동 안정화를 위한 버전 정렬
-#      - pydantic v2 계열 고정
-#      - pydantic-settings v2.4+ 추가
-#      - fastmcp 재정렬(업/다운 무관)
 RUN pip install --no-cache-dir -U \
     "pydantic>=2.7,<3" \
     "pydantic-settings>=2.4,<3" \
@@ -167,20 +177,18 @@ RUN if python -m pip show google >/dev/null 2>&1; then \
     python -m pip install -U pip setuptools wheel && \
     python -m pip install -U google-adk mcp
 
-# 8) 레포 루트의 autorun.sh를 /root로 복사 (레포에 있어야 빌드 성공)
+# 8) autorun.sh 복사
 COPY autorun.sh /root/autorun.sh
 
-# 9) 엔트리포인트 스크립트 생성: autorun 실행 후 bash -l 진입
+# 9) 엔트리포인트 스크립트
 RUN cat >/usr/local/bin/docker-entrypoint.sh <<'EOF' \
 && chmod +x /usr/local/bin/docker-entrypoint.sh
 #!/usr/bin/env bash
 set -euo pipefail
-# autorun 실행(있으면)
 if [ -f /root/autorun.sh ]; then
   chmod +x /root/autorun.sh || true
   /root/autorun.sh || true
 fi
-# 인자가 있으면 그걸 실행, 없으면 bash -l 실행
 if [ "$#" -gt 0 ]; then
   exec "$@"
 else
@@ -188,7 +196,7 @@ else
 fi
 EOF
 
-# 10) 기본 작업 디렉토리: /root/ext_volume (컨테이너 터미널 시작 위치)
+# 10) 기본 작업 디렉토리
 WORKDIR /root/ext_volume
 
 # 11) 엔트리포인트/커맨드

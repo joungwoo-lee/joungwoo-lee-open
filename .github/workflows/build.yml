@@ -5,7 +5,7 @@
 #   wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
 #   docker load -i sandboxdocker.tar
 #   docker compose up -d
-
+# .github/workflows/build.yml
 name: Publish Docker tar and compose to Release
 
 on:
@@ -33,7 +33,6 @@ jobs:
           test -f Dockerfile || { echo "Dockerfile not found at repo root"; exit 1; }
           ls -la || true
 
-      # Build using the repo's Dockerfile (root)
       - name: Build Docker image
         run: docker build -t sandboxdocker:latest .
 
@@ -42,7 +41,6 @@ jobs:
           docker save sandboxdocker:latest -o sandboxdocker.tar
           ls -lh sandboxdocker.tar
 
-      # Compose has no entrypoint override; autorun is handled inside the image now.
       - name: Generate docker-compose.yml
         run: |
           cat > docker-compose.yml <<'EOF'
@@ -59,6 +57,8 @@ jobs:
                 INTERNAL_LLM_API_KEY: "dev-key"
               volumes:
                 - ${HOME}:/root/ext_volume
+                # ★ 호스트 Docker 데몬 소켓 공유 (DoD 핵심)
+                - /var/run/docker.sock:/var/run/docker.sock
               ports:
                 - "37910:37910"
                 - "37911:37911"
@@ -68,6 +68,9 @@ jobs:
                 - "37915:37915"
                 - "38010:38010"
                 - "38011:38011"
+              # ★ Linux에서 host.docker.internal 해석 (Docker 20.10+ 권장)
+              extra_hosts:
+                - "host.docker.internal:host-gateway"
           EOF
 
       - name: Upload to Release
