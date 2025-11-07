@@ -141,9 +141,8 @@ RUN pip install --no-cache-dir \
     langchain-community \
     litellm \
     arxiv \
-    duckduckgo-search \
-    ddgs \
-    tavily-python
+    tavily-python \
+    perplexity-sdk
 
 # 3-1) fastmcp 구동 안정화를 위한 버전 정렬
 RUN pip install --no-cache-dir -U \
