@@ -10,67 +10,94 @@
 
 ---
 
-## Quick Start
+## Quick Start (원클릭 설치)
+
+가장 간단한 방법 - 스크립트 하나로 끝!
 
 ```bash
-# 1) tar와 compose 파일 받기
-wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar
-wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
-
-# 2) 이미지 로드
-docker load -i sandboxdocker.tar
-
-# 3) 컨테이너 실행
-docker compose up -d
-
-# 4) 컨테이너 접속 (시작 위치: /root/ext_volume)
-docker compose exec sandboxdocker bash
-
+# 스크립트 다운로드 및 실행
+wget https://raw.githubusercontent.com/joungwoo-lee/joungwoo-lee-open/main/run_sandboxdocker.sh
+bash run_sandboxdocker.sh
 ```
 
-Windows PowerShell 사용 시:
-
-```batch
-# 1) tar와 compose 파일 받기
-curl.exe -f -L -o "sandboxdocker.tar" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar"
-
-curl.exe -f -L -o "docker-compose.yml" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml"
-
-# 2) 이미지 로드
-wsl docker load -i sandboxdocker.tar
-
-# 3) 컨테이너 실행
-wsl docker compose up -d
-
-# 4) 컨테이너 접속 (시작 위치: /root/ext_volume)
-wsl docker compose exec sandboxdocker bash
-
-```
+스크립트는 두 가지 방식을 선택할 수 있습니다:
+1. **Docker Hub 방식** (권장) - 빠르고 간편
+2. **GitHub Release tar 방식** - 오프라인 환경 가능
 
 ---
 
-## Docker Hub에서 직접 사용하기 (로그인 불필요) ⭐ 권장
+## Quick Start (수동 설치)
 
-GitHub Release 대신 Docker Hub에서 직접 이미지를 받아 사용할 수 있습니다:
-
-> **참고:** 이미지는 public 레포지토리에 배포되므로 Docker 로그인 없이 바로 사용 가능합니다.
+### 방법 1: Docker Hub (권장)
 
 ```bash
 # 1) docker-compose.yml 다운로드
 wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
 
-# 2) 컨테이너 실행 (이미지는 자동으로 pull됩니다!)
+# 2) 컨테이너 실행 (이미지 자동 pull)
 docker compose up -d
 
 # 3) 컨테이너 접속
 docker compose exec sandboxdocker bash
 ```
 
-**장점:** 
-- ✅ `docker pull` 명령 불필요 (compose가 자동으로 처리)
-- ✅ tar 파일 다운로드/로드 과정 생략
-- ✅ Docker 레이어 캐싱 활용 가능
-- ✅ 업데이트 시 `docker compose pull && docker compose up -d` 한 줄이면 끝
+### 방법 2: GitHub Release tar 파일
+
+```bash
+# 1) tar 파일 다운로드
+wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar
+
+# 2) 이미지 로드 및 태그
+docker load -i sandboxdocker.tar
+docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
+
+# 3) docker-compose.yml 다운로드
+wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
+
+# 4) 컨테이너 실행
+docker compose up -d
+
+# 5) 컨테이너 접속
+docker compose exec sandboxdocker bash
+```
+
+
+
+### Windows PowerShell 사용 시:
+
+**방법 1: Docker Hub (권장)**
+
+```powershell
+# 1) docker-compose.yml 다운로드
+curl.exe -f -L -o "docker-compose.yml" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml"
+
+# 2) 컨테이너 실행 (이미지 자동 pull)
+wsl docker compose up -d
+
+# 3) 컨테이너 접속
+wsl docker compose exec sandboxdocker bash
+```
+
+**방법 2: GitHub Release tar 파일**
+
+```powershell
+# 1) tar 파일 다운로드
+curl.exe -f -L -o "sandboxdocker.tar" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar"
+
+# 2) 이미지 로드 및 태그
+wsl docker load -i sandboxdocker.tar
+wsl docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
+
+# 3) docker-compose.yml 다운로드
+curl.exe -f -L -o "docker-compose.yml" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml"
+
+# 4) 컨테이너 실행
+wsl docker compose up -d
+
+# 5) 컨테이너 접속
+wsl docker compose exec sandboxdocker bash
+```
+
 
 ---
 
