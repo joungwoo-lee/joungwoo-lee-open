@@ -3,7 +3,8 @@
 이 레포는 `main` 브랜치 변경 시 자동으로
 - `sandboxdocker.tar` (Docker 이미지) 와
 - `docker-compose.yml`
-을 **GitHub Release (tag: build-latest)** 에 올립니다.
+을 **GitHub Release (tag: build-latest)** 에 올리고,
+- **Docker Hub**에도 동시에 배포합니다.
 
 아래 명령만 실행하면 바로 기동됩니다.
 
@@ -45,6 +46,32 @@ wsl docker compose up -d
 wsl docker compose exec sandboxdocker bash
 
 ```
+
+---
+
+## Docker Hub에서 직접 사용하기
+
+GitHub Release 대신 Docker Hub에서 직접 이미지를 받아 사용할 수 있습니다:
+
+```bash
+# 1) Docker Hub에서 이미지 pull (USERNAME은 실제 Docker Hub 사용자명)
+docker pull USERNAME/sandboxdocker:latest
+
+# 2) docker-compose.yml 다운로드 (또는 직접 생성)
+wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
+
+# 3) docker-compose.yml의 image 부분 수정
+# image: sandboxdocker:latest
+# → image: USERNAME/sandboxdocker:latest 로 변경
+
+# 4) 컨테이너 실행
+docker compose up -d
+
+# 5) 컨테이너 접속
+docker compose exec sandboxdocker bash
+```
+
+**장점:** tar 파일 다운로드/로드 과정 생략, Docker 레이어 캐싱 활용 가능
 
 ---
 
