@@ -56,15 +56,15 @@ GitHub Release 대신 Docker Hub에서 직접 이미지를 받아 사용할 수 
 > **참고:** 이미지는 public 레포지토리에 배포되므로 Docker 로그인 없이 바로 사용 가능합니다.
 
 ```bash
-# 1) Docker Hub에서 이미지 pull - 로그인 불필요! (USERNAME은 실제 Docker Hub 사용자명)
-docker pull USERNAME/sandboxdocker:latest
+# 1) Docker Hub에서 이미지 pull - 로그인 불필요!
+docker pull evolve1/sandboxdocker:latest
 
 # 2) docker-compose.yml 다운로드 (또는 직접 생성)
 wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
 
 # 3) docker-compose.yml의 image 부분 수정
 # image: sandboxdocker:latest
-# → image: USERNAME/sandboxdocker:latest 로 변경
+# → image: evolve1/sandboxdocker:latest 로 변경
 
 # 4) 컨테이너 실행
 docker compose up -d
