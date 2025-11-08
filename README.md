@@ -49,12 +49,14 @@ wsl docker compose exec sandboxdocker bash
 
 ---
 
-## Docker Hub에서 직접 사용하기
+## Docker Hub에서 직접 사용하기 (로그인 불필요)
 
 GitHub Release 대신 Docker Hub에서 직접 이미지를 받아 사용할 수 있습니다:
 
+> **참고:** 이미지는 public 레포지토리에 배포되므로 Docker 로그인 없이 바로 사용 가능합니다.
+
 ```bash
-# 1) Docker Hub에서 이미지 pull (USERNAME은 실제 Docker Hub 사용자명)
+# 1) Docker Hub에서 이미지 pull - 로그인 불필요! (USERNAME은 실제 Docker Hub 사용자명)
 docker pull USERNAME/sandboxdocker:latest
 
 # 2) docker-compose.yml 다운로드 (또는 직접 생성)
