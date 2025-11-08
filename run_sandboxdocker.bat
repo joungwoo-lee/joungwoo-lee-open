@@ -6,6 +6,9 @@ curl.exe -f -L -o "docker-compose.yml" "https://github.com/joungwoo-lee/joungwoo
 # 2) 이미지 로드
 wsl docker load -i sandboxdocker.tar
 
+# 2-1) 이미지 태그 변경 (docker-compose.yml과 일치시키기)
+wsl docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
+
 # 3) 컨테이너 실행
 wsl docker compose up -d
 

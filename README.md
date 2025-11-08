@@ -3,7 +3,8 @@
 이 레포는 `main` 브랜치 변경 시 자동으로
 - `sandboxdocker.tar` (Docker 이미지) 와
 - `docker-compose.yml`
-을 **GitHub Release (tag: build-latest)** 에 올립니다.
+을 **GitHub Release (tag: build-latest)** 에 올리고,
+- **Docker Hub**에도 동시에 배포합니다.
 
 아래 명령만 실행하면 바로 기동됩니다.
 
@@ -16,8 +17,9 @@
 wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar
 wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
 
-# 2) 이미지 로드
+# 2) 이미지 로드 및 태그
 docker load -i sandboxdocker.tar
+docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
 
 # 3) 컨테이너 실행
 docker compose up -d
@@ -35,8 +37,9 @@ curl.exe -f -L -o "sandboxdocker.tar" "https://github.com/joungwoo-lee/joungwoo-
 
 curl.exe -f -L -o "docker-compose.yml" "https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml"
 
-# 2) 이미지 로드
+# 2) 이미지 로드 및 태그
 wsl docker load -i sandboxdocker.tar
+wsl docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
 
 # 3) 컨테이너 실행
 wsl docker compose up -d
@@ -45,6 +48,7 @@ wsl docker compose up -d
 wsl docker compose exec sandboxdocker bash
 
 ```
+
 
 ---
 
@@ -96,7 +100,7 @@ Update to latest
 ```bash
 wget -O sandboxdocker.tar https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar
 docker load -i sandboxdocker.tar
-docker compose pull || true   # 태그가 latest면 생략 가능
+docker tag sandboxdocker:latest evolve1/sandboxdocker:latest
 docker compose up -d
 
 ```
