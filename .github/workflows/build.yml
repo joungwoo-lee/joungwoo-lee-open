@@ -70,7 +70,7 @@ jobs:
           version: "3.8"
           services:
             sandboxdocker:
-              image: sandboxdocker:latest
+              image: evolve1/sandboxdocker:latest
               container_name: sandboxdocker
               restart: always
               tty: true

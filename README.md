@@ -49,31 +49,28 @@ wsl docker compose exec sandboxdocker bash
 
 ---
 
-## Docker Hub에서 직접 사용하기 (로그인 불필요)
+## Docker Hub에서 직접 사용하기 (로그인 불필요) ⭐ 권장
 
 GitHub Release 대신 Docker Hub에서 직접 이미지를 받아 사용할 수 있습니다:
 
 > **참고:** 이미지는 public 레포지토리에 배포되므로 Docker 로그인 없이 바로 사용 가능합니다.
 
 ```bash
-# 1) Docker Hub에서 이미지 pull - 로그인 불필요!
-docker pull evolve1/sandboxdocker:latest
-
-# 2) docker-compose.yml 다운로드 (또는 직접 생성)
+# 1) docker-compose.yml 다운로드
 wget https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/docker-compose.yml
 
-# 3) docker-compose.yml의 image 부분 수정
-# image: sandboxdocker:latest
-# → image: evolve1/sandboxdocker:latest 로 변경
-
-# 4) 컨테이너 실행
+# 2) 컨테이너 실행 (이미지는 자동으로 pull됩니다!)
 docker compose up -d
 
-# 5) 컨테이너 접속
+# 3) 컨테이너 접속
 docker compose exec sandboxdocker bash
 ```
 
-**장점:** tar 파일 다운로드/로드 과정 생략, Docker 레이어 캐싱 활용 가능
+**장점:** 
+- ✅ `docker pull` 명령 불필요 (compose가 자동으로 처리)
+- ✅ tar 파일 다운로드/로드 과정 생략
+- ✅ Docker 레이어 캐싱 활용 가능
+- ✅ 업데이트 시 `docker compose pull && docker compose up -d` 한 줄이면 끝
 
 ---
 
@@ -117,17 +114,21 @@ restart: always
 
 ---
 
-Update to latest
+## Update to latest
 
 새 빌드가 올라오면 아래만 다시 실행하면 됩니다.
 
+**Docker Hub 사용 시 (권장):**
+```bash
+docker compose pull
+docker compose up -d
+```
 
+**GitHub Release 사용 시:**
 ```bash
 wget -O sandboxdocker.tar https://github.com/joungwoo-lee/joungwoo-lee-open/releases/download/build-latest/sandboxdocker.tar
 docker load -i sandboxdocker.tar
-docker compose pull || true   # 태그가 latest면 생략 가능
 docker compose up -d
-
 ```
 
 ---
