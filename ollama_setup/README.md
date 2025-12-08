@@ -5,7 +5,7 @@
 ## 구성 요소
 
 - `docker-compose.yml`: Ollama 컨테이너를 GPU 가속과 함께 실행하는 설정
-- `.env`: API 설정 및 환경 변수
+- `.env`: test 파일(test_langchain_openai.py, test_openai.py)용 API 설정 및 환경 변수
 - `setup_and_test.sh`: 전체 설정 및 테스트를 자동으로 실행하는 스크립트
 - `llm_connector_openai.py`: OpenAI 라이브러리를 사용한 테스트 코드
 - `llm_connector_langchain_openai.py`: LangChain OpenAI를 사용한 테스트 코드
