@@ -145,7 +145,7 @@ echo "필요한 패키지 확인 중..."
 if python3 -c "import openai; from dotenv import load_dotenv" 2>/dev/null; then
     echo "모든 필요한 패키지가 설치되어 있습니다."
     echo ""
-    python3 llm_connector_openai.py
+    python3 test_openai.py
 else
     echo ""
     echo "❌ 필요한 패키지가 설치되어 있지 않습니다."
@@ -168,7 +168,7 @@ echo "필요한 패키지 확인 중..."
 if python3 -c "from langchain_openai import ChatOpenAI; from dotenv import load_dotenv" 2>/dev/null; then
     echo "모든 필요한 패키지가 설치되어 있습니다."
     echo ""
-    python3 llm_connector_langchain_openai.py
+    python3 test_langchain_openai.py
 else
     echo ""
     echo "❌ 필요한 패키지가 설치되어 있지 않습니다."
